@@ -58,23 +58,7 @@ That makes Seq a practical local observability tool when you are iterating on AI
 vitaliyboyko/magento-seq
 ```
 
-## Suggested install from a sibling directory
-
-Add a path repository to the Magento project:
-
-```json
-{
-  "repositories": {
-    "vitaliyboyko-magento-seq": {
-      "type": "path",
-      "url": "../seq-docker",
-      "options": {
-        "symlink": true
-      }
-    }
-  }
-}
-```
+## Installation
 
 Install the module:
 
