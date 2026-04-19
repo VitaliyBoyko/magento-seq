@@ -16,7 +16,8 @@ class Config
 
     public function __construct(
         private readonly ScopeConfigInterface $scopeConfig,
-        private readonly EncryptorInterface $encryptor
+        private readonly EncryptorInterface $encryptor,
+        private readonly UrlProcessor $urlProcessor
     ) {
     }
 
@@ -27,7 +28,12 @@ class Config
 
     public function getUrl(): string
     {
-        return trim((string) $this->scopeConfig->getValue(self::XML_PATH_URL, ScopeInterface::SCOPE_STORE));
+        $value = trim((string) $this->scopeConfig->getValue(self::XML_PATH_URL, ScopeInterface::SCOPE_STORE));
+        if ($value === '') {
+            return '';
+        }
+
+        return $this->urlProcessor->normalize($value);
     }
 
     public function getPassword(): string

@@ -50,7 +50,8 @@ That makes Seq a practical local observability tool when you are iterating on AI
 - mirrors Magento Monolog records to Seq
 - exposes a backend instrumentation service for custom events
 - exposes a frontend helper as `window.devSeq`
-- provides admin config for Seq URL and optional password / API key
+- exposes an anonymous REST API endpoint for storefront event collection
+- provides admin config for Seq host / URL and optional password / API key
 
 ## Package name
 
@@ -83,10 +84,14 @@ After install, configure the module in:
 Fields:
 
 - `Enabled`
-- `Seq URL`
+- `Seq Host / URL`
 - `Password / API Key`
 
 If the password field is filled, the module sends it as an `X-Seq-ApiKey` header.
+
+If you enter only the Seq host, the module automatically sends to `/api/events/raw?clef`.
+
+The config field is validated on save. It accepts either a plain Seq host such as `http://seq:80`, or the exact raw CLEF endpoint. Magento also performs a live HTTP check against the Seq server during save and shows an admin error if the server is unreachable.
 
 ## Backend usage
 
@@ -128,7 +133,7 @@ window.devSeq.warn('custom.frontend.event', { state: 'unexpected' });
 window.devSeq.error('custom.frontend.event', { reason: 'request failed' });
 ```
 
-Frontend events are posted back to Magento and relayed server-side to Seq, so the Seq URL and password do not need to be exposed to the browser.
+Frontend events are posted to Magento through the REST API and relayed server-side to Seq, so the Seq URL and password do not need to be exposed to the browser.
 
 ## Seq container setup
 
@@ -157,13 +162,19 @@ volumes:
   seqdata:
 ```
 
-With that container running, a typical local Magento config value for `Seq URL` is:
+With that container running, a typical local Magento config value for `Seq Host / URL` is:
 
 ```text
-http://host.docker.internal:5341/api/events/raw?clef
+http://host.docker.internal:5341
 ```
 
 If Magento and Seq run in the same Docker Compose network, you can usually use:
+
+```text
+http://seq:80
+```
+
+You can still provide the full raw endpoint explicitly if you want:
 
 ```text
 http://seq:80/api/events/raw?clef

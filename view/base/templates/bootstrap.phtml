@@ -4,10 +4,77 @@ if (!$block->isEnabled()) {
     return;
 }
 ?>
-<script type="text/x-magento-init">
-{
-    "*": {
-        "VitaliiBoiko_Seq/js/bootstrap": <?= /* @noEscape */ $block->getJsonConfig() ?>
-    }
-}
+<script>
+    (function (config) {
+        'use strict';
+
+        var endpoint = config && config.collectUrl ? config.collectUrl : null;
+        var logger;
+
+        if (!endpoint) {
+            return;
+        }
+
+        function post(level, message, context) {
+            var payload = JSON.stringify({
+                level: level,
+                message: String(message || 'frontend.event'),
+                contextJson: JSON.stringify(context || {})
+            });
+
+            if (!payload) {
+                return;
+            }
+
+            if (navigator.sendBeacon) {
+                try {
+                    navigator.sendBeacon(endpoint, new Blob([payload], {
+                        type: 'application/json'
+                    }));
+                    return;
+                } catch (error) {}
+            }
+
+            if (typeof fetch !== 'function') {
+                return;
+            }
+
+            try {
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: payload,
+                    keepalive: true,
+                    credentials: 'same-origin'
+                });
+            } catch (error) {}
+        }
+
+        logger = window.devSeq || {};
+        logger.debug = function (message, context) {
+            post('Debug', message, context);
+        };
+        logger.info = function (message, context) {
+            post('Info', message, context);
+        };
+        logger.warn = function (message, context) {
+            post('Warning', message, context);
+        };
+        logger.error = function (message, context) {
+            post('Error', message, context);
+        };
+
+        window.devSeq = logger;
+        window.vitaliiBoikoSeq = logger;
+
+        if (!window.__vitaliiBoikoSeqBootstrapLogged) {
+            window.__vitaliiBoikoSeqBootstrapLogged = true;
+            logger.debug('frontend.bootstrap.loaded', {
+                pathname: window.location.pathname,
+                search: window.location.search
+            });
+        }
+    }(<?= /* @noEscape */ $block->getJsonConfig() ?>));
 </script>

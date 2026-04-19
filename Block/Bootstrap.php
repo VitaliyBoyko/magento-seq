@@ -32,10 +32,10 @@ class Bootstrap extends Template
         ]);
     }
 
-    private function getCollectUrl(): string
+    public function getCollectUrl(): string
     {
         $baseUrl = rtrim((string) $this->storeManager->getStore()->getBaseUrl(), '/');
 
-        return $baseUrl . '/seq/logger/collect/';
+        return $baseUrl . '/rest/V1/vitaliiboiko-seq/collect';
     }
 }

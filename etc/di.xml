@@ -3,6 +3,8 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="VitaliiBoiko\Seq\Api\InstrumentationInterface"
                 type="VitaliiBoiko\Seq\Model\Instrumentation"/>
+    <preference for="VitaliiBoiko\Seq\Api\FrontendEventCollectorInterface"
+                type="VitaliiBoiko\Seq\Model\FrontendEventCollector"/>
 
     <type name="Monolog\Logger">
         <plugin name="vitaliiboiko_seq_monolog_plugin"

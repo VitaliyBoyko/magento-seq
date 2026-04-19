@@ -18,9 +18,10 @@
                 </field>
                 <field id="url" translate="label comment" type="text" sortOrder="20"
                        showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Seq URL</label>
+                    <label>Seq Host / URL</label>
+                    <backend_model>VitaliiBoiko\Seq\Model\Config\Backend\Url</backend_model>
                     <validate>required-entry</validate>
-                    <comment>Example: http://host.docker.internal:5341/api/events/raw?clef</comment>
+                    <comment>Examples: http://seq, http://seq:80, http://host.docker.internal:5341. The module appends /api/events/raw?clef automatically when no path is provided, and tests the Seq connection on save.</comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>

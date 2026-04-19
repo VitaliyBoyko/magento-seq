@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace VitaliiBoiko\Seq\Plugin;
 
-use Monolog\Level;
 use Monolog\Logger;
-use Throwable;
 use VitaliiBoiko\Seq\Model\SeqClient;
 
 class MonologPlugin
@@ -21,7 +19,7 @@ class MonologPlugin
     public function afterAddRecord(
         Logger $subject,
         bool $result,
-        int|Level $level,
+        mixed $level,
         string $message,
         array $context = []
     ): bool {
@@ -43,16 +41,25 @@ class MonologPlugin
         return $result;
     }
 
-    private function resolveLevelName(int|Level $level): string
+    private function resolveLevelName(mixed $level): string
     {
-        if ($level instanceof Level) {
+        if (is_object($level) && isset($level->name) && is_string($level->name)) {
             return $level->name;
         }
 
-        try {
-            return Level::fromValue($level)->name;
-        } catch (Throwable) {
-            return Level::Debug->name;
+        if (is_string($level) && $level !== '') {
+            return ucfirst(strtolower($level));
         }
+
+        return match ((int) $level) {
+            200 => 'Info',
+            250 => 'Notice',
+            300 => 'Warning',
+            400 => 'Error',
+            500 => 'Critical',
+            550 => 'Alert',
+            600 => 'Emergency',
+            default => 'Debug',
+        };
     }
 }
