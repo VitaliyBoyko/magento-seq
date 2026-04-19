@@ -1,6 +1,6 @@
-# VitaliyBoyko Magento Seq
+# Magento Seq
 
-`vitaliyboyko/magento-seq` is a Magento 2 module for local development only.
+`magento-seq` is a Magento 2 module for local development only.
 
 Do not install this in production. It is meant for developer machines where you want Magento logs and ad hoc instrumentation to flow into Seq without patching the project codebase.
 
