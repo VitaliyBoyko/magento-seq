@@ -23,6 +23,28 @@ Seq is a good fit for that style of instrumentation because it lets you quickly 
 
 That makes Seq a practical local observability tool when you are iterating on AI features and need a fast feedback loop during debugging.
 
+<table align="center" style="border-collapse: collapse; width: 100%; text-align: center;">
+  <tbody>
+    <tr style="background-color: #f9f9f9;">
+      <td style="padding: 20px;">
+        <h3 style="margin: 10px 0;">Support the Project</h3>
+        <p>If this module is useful in your local Magento workflow, consider buying the contributor a coffee:</p>
+        <a href="https://buymeacoffee.com/vitalii_b" style="text-decoration: none; color: inherit;">
+<pre style="display: inline-block; margin: 10px 0; font-family: monospace;">
+    ( (
+     ) )
+  ........
+  |      |]
+  \      /
+   `----'
+ Buy Me a Coffee
+</pre>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ## What it does
 
 - mirrors Magento Monolog records to Seq
@@ -54,10 +76,15 @@ Add a path repository to the Magento project:
 }
 ```
 
-Then require it as a dev dependency:
+Install the module:
 
 ```bash
-composer require --dev vitaliyboyko/magento-seq:@dev
+composer require --dev vitaliyboyko/magento-seq
+```
+
+Then enable it in Magento:
+
+```bash
 bin/magento module:enable VitaliiBoiko_Seq
 bin/magento setup:upgrade
 bin/magento cache:flush
