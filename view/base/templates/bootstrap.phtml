@@ -1,0 +1,13 @@
+<?php
+/** @var \VitaliiBoiko\Seq\Block\Bootstrap $block */
+if (!$block->isEnabled()) {
+    return;
+}
+?>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "VitaliiBoiko_Seq/js/bootstrap": <?= /* @noEscape */ $block->getJsonConfig() ?>
+    }
+}
+</script>

@@ -1,0 +1,25 @@
+{
+  "name": "vitaliyboyko/magento-seq",
+  "description": "Magento 2 local-development Seq instrumentation module",
+  "type": "magento2-module",
+  "version": "1.0.0",
+  "require": {
+    "php": "^8.1 || ^8.2 || ^8.3 || ^8.4",
+    "ext-curl": "*",
+    "magento/framework": "*",
+    "magento/module-backend": "*",
+    "magento/module-config": "*",
+    "magento/module-store": "*"
+  },
+  "license": [
+    "proprietary"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "VitaliiBoiko\\Seq\\": ""
+    }
+  }
+}
