@@ -53,11 +53,13 @@ That makes Seq a practical local observability tool when you are iterating on AI
 - exposes an anonymous REST API endpoint for storefront event collection
 - provides admin config for Seq host / URL and optional password / API key
 
-## Package name
+## Good companion plugin for IntelliJ IDEs
 
-```text
-vitaliyboyko/magento-seq
-```
+If you use JetBrains IDEs, [`Seq MCP`](https://plugins.jetbrains.com/plugin/31358-seq-mcp) is a strong fit to use together with this module.
+
+This Magento module is responsible for getting Magento logs and custom instrumentation into Seq. The JetBrains plugin complements that by exposing Seq-focused tools inside the IDE through JetBrains' built-in MCP server, so an AI assistant connected to your IDE can inspect the Seq data produced by this module while you work on the project.
+
+Together, they make a practical local workflow for Magento AI debugging: Magento emits structured events to Seq, and the IDE-side MCP integration makes those events easier to explore from within the development environment.
 
 ## Installation
 

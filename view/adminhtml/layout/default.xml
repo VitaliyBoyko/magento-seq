@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+>
     <body>
         <referenceBlock name="head.additional">
-            <block class="VitaliiBoiko\Seq\Block\Bootstrap"
-                   name="vitaliiboiko.seq.admin.bootstrap"
-                   template="VitaliiBoiko_Seq::bootstrap.phtml"
-                   cacheable="false"/>
+            <block
+                class="VitaliiBoiko\Seq\Block\Bootstrap"
+                name="vitaliiboiko.seq.admin.bootstrap"
+                template="VitaliiBoiko_Seq::bootstrap.phtml"
+                cacheable="false"
+            />
         </referenceBlock>
     </body>
 </page>

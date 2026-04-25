@@ -8,10 +8,16 @@ use JsonSerializable;
 use Stringable;
 use Throwable;
 
+/**
+ * Converts arbitrary PHP values into JSON-safe data structures for Seq payloads.
+ */
 class Normalizer
 {
     private const MAX_DEPTH = 6;
 
+    /**
+     * Normalize a value recursively while guarding against deep or cyclic structures.
+     */
     public function normalize(mixed $value, int $depth = 0): mixed
     {
         if ($depth >= self::MAX_DEPTH) {
@@ -57,6 +63,7 @@ class Normalizer
         if (is_object($value)) {
             return [
                 'class' => $value::class,
+                // Limit object serialization to visible properties to avoid side effects.
                 'properties' => $this->normalize(get_object_vars($value), $depth + 1),
             ];
         }

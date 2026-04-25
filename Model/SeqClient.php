@@ -8,6 +8,9 @@ use Magento\Framework\App\State;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Throwable;
 
+/**
+ * Sends CLEF-formatted events to the configured Seq endpoint.
+ */
 class SeqClient
 {
     public function __construct(
@@ -20,8 +23,10 @@ class SeqClient
     }
 
     /**
-     * @param array<string, mixed> $context
-     * @param array<string, mixed> $extra
+     * Send a single event to Seq.
+     *
+     * @param array<string, mixed> $context Structured event payload.
+     * @param array<string, mixed> $extra Additional top-level CLEF fields.
      */
     public function send(string $message, array $context = [], string $level = 'Debug', array $extra = []): void
     {
@@ -34,6 +39,7 @@ class SeqClient
             return;
         }
 
+        // Seq accepts newline-delimited CLEF events. Each request emits one event.
         $payload = [
             '@t' => gmdate('c'),
             '@mt' => $message,
@@ -66,6 +72,7 @@ class SeqClient
             return;
         }
 
+        // Keep delivery best-effort and non-blocking for normal Magento execution paths.
         curl_setopt_array($curl, [
             CURLOPT_POST => true,
             CURLOPT_HTTPHEADER => $headers,
@@ -80,6 +87,8 @@ class SeqClient
     }
 
     /**
+     * Collect request metadata that helps correlate events in Seq.
+     *
      * @return array<string, mixed>
      */
     private function collectRequestMetadata(): array

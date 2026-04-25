@@ -1,5 +1,6 @@
 <?php
 /** @var \VitaliiBoiko\Seq\Block\Bootstrap $block */
+
 if (!$block->isEnabled()) {
     return;
 }
@@ -8,6 +9,7 @@ if (!$block->isEnabled()) {
     (function (config) {
         'use strict';
 
+        var defaultMessage = 'frontend.event';
         var endpoint = config && config.collectUrl ? config.collectUrl : null;
         var logger;
 
@@ -18,7 +20,7 @@ if (!$block->isEnabled()) {
         function post(level, message, context) {
             var payload = JSON.stringify({
                 level: level,
-                message: String(message || 'frontend.event'),
+                message: String(message || defaultMessage),
                 contextJson: JSON.stringify(context || {})
             });
 
@@ -26,13 +28,16 @@ if (!$block->isEnabled()) {
                 return;
             }
 
+            // `sendBeacon()` keeps logging best-effort during navigations and unloads.
             if (navigator.sendBeacon) {
                 try {
                     navigator.sendBeacon(endpoint, new Blob([payload], {
                         type: 'application/json'
                     }));
                     return;
-                } catch (error) {}
+                } catch (error) {
+                    // Fall through to `fetch()` when the browser rejects the beacon payload.
+                }
             }
 
             if (typeof fetch !== 'function') {
@@ -49,7 +54,9 @@ if (!$block->isEnabled()) {
                     keepalive: true,
                     credentials: 'same-origin'
                 });
-            } catch (error) {}
+            } catch (error) {
+                // Frontend logging should never break the page.
+            }
         }
 
         logger = window.devSeq || {};
@@ -67,10 +74,10 @@ if (!$block->isEnabled()) {
         };
 
         window.devSeq = logger;
-        window.vitaliiBoikoSeq = logger;
 
-        if (!window.__vitaliiBoikoSeqBootstrapLogged) {
-            window.__vitaliiBoikoSeqBootstrapLogged = true;
+        if (!window.__devSeqBootstrapLogged) {
+            window.__devSeqBootstrapLogged = true;
+            // Emit a single bootstrap event to confirm the helper was loaded on the page.
             logger.debug('frontend.bootstrap.loaded', {
                 pathname: window.location.pathname,
                 search: window.location.search

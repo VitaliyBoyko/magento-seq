@@ -5,6 +5,9 @@ namespace VitaliiBoiko\Seq\Model;
 
 use Magento\Framework\Exception\LocalizedException;
 
+/**
+ * Performs a lightweight network check against the configured Seq instance.
+ */
 class ConnectionValidator
 {
     public function __construct(
@@ -13,6 +16,8 @@ class ConnectionValidator
     }
 
     /**
+     * Ensure the configured Seq endpoint is reachable from Magento.
+     *
      * @throws LocalizedException
      */
     public function validateReachable(string $value): void
@@ -28,6 +33,7 @@ class ConnectionValidator
             );
         }
 
+        // Hitting `/api` is enough to prove the host is reachable without sending event data.
         $healthCheckUrl = $this->urlProcessor->getHealthCheckUrl($value);
         if ($healthCheckUrl === '') {
             throw new LocalizedException(
@@ -42,6 +48,7 @@ class ConnectionValidator
             );
         }
 
+        // Keep the admin save responsive: this is a connectivity probe, not a full health audit.
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => false,

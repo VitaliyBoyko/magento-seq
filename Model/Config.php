@@ -8,6 +8,9 @@ use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Store\Model\ScopeInterface;
 use Throwable;
 
+/**
+ * Reads and normalizes module configuration values from Magento config storage.
+ */
 class Config
 {
     private const XML_PATH_ENABLED = 'vitaliiboiko_seq/general/enabled';
@@ -21,11 +24,17 @@ class Config
     ) {
     }
 
+    /**
+     * Check whether Seq forwarding is enabled for the current store scope.
+     */
     public function isEnabled(): bool
     {
         return $this->scopeConfig->isSetFlag(self::XML_PATH_ENABLED, ScopeInterface::SCOPE_STORE);
     }
 
+    /**
+     * Return the normalized Seq ingest URL configured for the current store.
+     */
     public function getUrl(): string
     {
         $value = trim((string) $this->scopeConfig->getValue(self::XML_PATH_URL, ScopeInterface::SCOPE_STORE));
@@ -36,6 +45,12 @@ class Config
         return $this->urlProcessor->normalize($value);
     }
 
+    /**
+     * Return the configured Seq API key.
+     *
+     * Magento stores encrypted config values, but this fallback keeps local
+     * development setups working when the value was saved in plain text.
+     */
     public function getPassword(): string
     {
         $value = (string) $this->scopeConfig->getValue(self::XML_PATH_PASSWORD, ScopeInterface::SCOPE_STORE);

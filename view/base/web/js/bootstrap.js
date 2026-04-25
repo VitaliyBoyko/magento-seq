@@ -2,6 +2,7 @@ define([], function () {
     'use strict';
 
     return function (config) {
+        var defaultMessage = 'frontend.event';
         var endpoint = config && config.collectUrl ? config.collectUrl : null;
 
         if (!endpoint || window.devSeq) {
@@ -11,21 +12,24 @@ define([], function () {
         function post(level, message, context) {
             var payload = JSON.stringify({
                 level: level,
-                message: String(message || 'frontend.event'),
-                context: context || {}
+                message: String(message || defaultMessage),
+                contextJson: JSON.stringify(context || {})
             });
 
             if (!payload) {
                 return;
             }
 
+            // `sendBeacon()` keeps logging best-effort during navigations and unloads.
             if (navigator.sendBeacon) {
                 try {
                     navigator.sendBeacon(endpoint, new Blob([payload], {
                         type: 'application/json'
                     }));
                     return;
-                } catch (error) {}
+                } catch (error) {
+                    // Fall through to `fetch()` when the browser rejects the beacon payload.
+                }
             }
 
             if (typeof fetch !== 'function') {
@@ -42,7 +46,9 @@ define([], function () {
                     keepalive: true,
                     credentials: 'same-origin'
                 });
-            } catch (error) {}
+            } catch (error) {
+                // Frontend logging should never break the page.
+            }
         }
 
         window.devSeq = {
@@ -60,7 +66,7 @@ define([], function () {
             }
         };
 
-        window.vitaliiBoikoSeq = window.devSeq;
+        // Emit a single bootstrap event to confirm the helper was loaded on the page.
         window.devSeq.debug('frontend.bootstrap.loaded', {
             pathname: window.location.pathname,
             search: window.location.search

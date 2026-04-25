@@ -6,12 +6,18 @@ namespace VitaliiBoiko\Seq\Model;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
 
+/**
+ * Normalizes and validates Seq URLs entered in admin configuration.
+ */
 class UrlProcessor
 {
     private const DEFAULT_INGEST_PATH = '/api/events/raw';
     private const DEFAULT_INGEST_QUERY = 'clef';
     private const HEALTH_CHECK_PATH = '/api';
 
+    /**
+     * Normalize a host or partial URL into the Seq raw ingest endpoint.
+     */
     public function normalize(string $value): string
     {
         $value = trim($value);
@@ -39,6 +45,8 @@ class UrlProcessor
     }
 
     /**
+     * Validate a Seq host or URL entered in admin configuration.
+     *
      * @throws LocalizedException
      */
     public function validate(string $value): void
@@ -89,6 +97,9 @@ class UrlProcessor
         }
     }
 
+    /**
+     * Build the lightweight Seq API URL used for connectivity tests.
+     */
     public function getHealthCheckUrl(string $value): string
     {
         $parts = $this->parseParts(trim($value));
@@ -100,6 +111,8 @@ class UrlProcessor
     }
 
     /**
+     * Parse a Seq host or URL into parts, defaulting the scheme when omitted.
+     *
      * @return array<string, int|string>|null
      */
     private function parseParts(string $value): ?array
@@ -115,6 +128,8 @@ class UrlProcessor
     }
 
     /**
+     * Rebuild a normalized URL from parsed parts.
+     *
      * @param array<string, int|string> $parts
      */
     private function buildUrl(array $parts, string $path, ?string $query): string
@@ -152,6 +167,9 @@ class UrlProcessor
         return $url;
     }
 
+    /**
+     * Build the reusable validation message for unsupported paths.
+     */
     private function buildPathError(): Phrase
     {
         return __(

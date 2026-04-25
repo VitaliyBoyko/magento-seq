@@ -2,7 +2,7 @@
   "name": "vitaliyboyko/magento-seq",
   "description": "Magento 2 local-development Seq instrumentation module",
   "type": "magento2-module",
-  "version": "2026.1.0",
+  "version": "2026.1.1",
   "require": {
     "php": "^8.1 || ^8.2 || ^8.3 || ^8.4",
     "ext-curl": "*",

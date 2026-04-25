@@ -8,6 +8,9 @@ use Magento\Framework\Exception\LocalizedException;
 use VitaliiBoiko\Seq\Model\ConnectionValidator;
 use VitaliiBoiko\Seq\Model\UrlProcessor;
 
+/**
+ * Validates and normalizes the Seq URL before it is persisted in admin config.
+ */
 class Url extends Value
 {
     public function __construct(
@@ -32,6 +35,11 @@ class Url extends Value
         );
     }
 
+    /**
+     * Validate the configured Seq endpoint before Magento persists the value.
+     *
+     * @throws LocalizedException
+     */
     public function beforeSave(): self
     {
         $value = trim((string) $this->getValue());

@@ -6,6 +6,9 @@ namespace VitaliiBoiko\Seq\Plugin;
 use Monolog\Logger;
 use VitaliiBoiko\Seq\Model\SeqClient;
 
+/**
+ * Mirrors Magento Monolog records to Seq.
+ */
 class MonologPlugin
 {
     public function __construct(
@@ -14,7 +17,9 @@ class MonologPlugin
     }
 
     /**
-     * @param array<string, mixed> $context
+     * Forward successfully accepted Monolog records to Seq.
+     *
+     * @param array<string, mixed> $context Monolog record context.
      */
     public function afterAddRecord(
         Logger $subject,
@@ -41,6 +46,9 @@ class MonologPlugin
         return $result;
     }
 
+    /**
+     * Normalize Monolog 2 and Monolog 3 level representations to Seq names.
+     */
     private function resolveLevelName(mixed $level): string
     {
         if (is_object($level) && isset($level->name) && is_string($level->name)) {

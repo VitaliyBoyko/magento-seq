@@ -8,6 +8,9 @@ use VitaliiBoiko\Seq\Api\FrontendEventCollectorInterface;
 use VitaliiBoiko\Seq\Api\InstrumentationInterface;
 use Throwable;
 
+/**
+ * Web API entry point used by the browser logger.
+ */
 class FrontendEventCollector implements FrontendEventCollectorInterface
 {
     public function __construct(
@@ -16,6 +19,9 @@ class FrontendEventCollector implements FrontendEventCollectorInterface
     ) {
     }
 
+    /**
+     * Collect a frontend event and relay it through the shared instrumentation service.
+     */
     public function collect(
         string $message = 'frontend.event',
         string $contextJson = '{}',
@@ -38,6 +44,8 @@ class FrontendEventCollector implements FrontendEventCollectorInterface
     }
 
     /**
+     * Decode the browser-supplied context JSON into a structured array.
+     *
      * @return array<string, mixed>
      */
     private function decodeContext(string $contextJson): array
@@ -53,6 +61,7 @@ class FrontendEventCollector implements FrontendEventCollectorInterface
                 return $decoded;
             }
         } catch (Throwable) {
+            // Preserve the raw payload so malformed events are still inspectable in Seq.
             return ['raw_context' => $contextJson];
         }
 

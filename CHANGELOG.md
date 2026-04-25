@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026.1.1] - 2026-04-25
+
+### Fixed
+
+- The RequireJS frontend bootstrap now sends browser event context as `contextJson`, matching the Magento Web API contract used by the collector endpoint.
+- Frontend bootstrap event delivery is now consistent between the inline template bootstrap and the JavaScript module bootstrap.
+
+### Changed
+
+- README documentation now highlights the Seq MCP JetBrains plugin as a companion for inspecting Magento events in Seq from the IDE.
+- Internal code documentation was expanded across the public service contracts, Seq client, config handling, and frontend bootstrap components.
+
 ## [2026.1.0] - 2026-04-19
 
 Initial release of `vitaliyboyko/magento-seq`.
