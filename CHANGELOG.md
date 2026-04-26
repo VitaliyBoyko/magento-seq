@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026.1.2] - 2026-04-26
+
+### Added
+
+- Added a root `SKILL.md` focused on using the module for Magento instrumentation rather than module maintenance.
+
+### Changed
+
+- The instrumentation skill now instructs agents to check for the `Seq MCP` toolset and use it to read back events from Seq when available.
+
 ## [2026.1.1] - 2026-04-25
 
 ### Fixed
