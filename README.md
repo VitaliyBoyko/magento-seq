@@ -1,6 +1,6 @@
-# Magento Seq
+# Magento 2 Seq logging and instrumentation
 
-`magento-seq` is a Magento 2 module for local development only.
+`vitaliyboyko/magento-seq` forwards Magento Monolog records and custom PHP/JavaScript events to [Seq](https://datalust.co/seq) as structured CLEF logs. Use it to inspect local request flow and debug modules from one event stream. This module is for local development only.
 
 Do not install this in production. It is meant for developer machines where you want Magento logs and ad hoc instrumentation to flow into Seq without patching the project codebase.
 
@@ -10,18 +10,9 @@ Seq is a structured log and event server built for fast debugging. Instead of di
 
 For local development, that is especially useful because you can inspect request flow, custom instrumentation, and Magento logs in one place with timestamps, levels, and payload fields intact.
 
-## Why Seq is useful for LLM instrumentation
+## Custom instrumentation and AI-assisted debugging
 
-LLM workflows are much easier to debug when prompts, responses, timings, model names, token counts, tool calls, and request context are captured as structured events instead of free-form text logs.
-
-Seq is a good fit for that style of instrumentation because it lets you quickly answer questions like:
-
-- which prompt version caused a bad response
-- where latency increased in a multi-step pipeline
-- which tool call or API dependency failed
-- what input or session context led to a hallucination or malformed output
-
-That makes Seq a practical local observability tool when you are iterating on AI features and need a fast feedback loop during debugging.
+Use the PHP service or `window.devSeq` helper below to record application events with structured context. You choose the event names and fields; the module does not automatically capture LLM prompts, responses or token usage. The [Seq MCP plugin](https://github.com/VitaliyBoyko/seq-intellij-mcp) lets a connected assistant query those events through the IDE.
 
 <table align="center" style="border-collapse: collapse; width: 100%; text-align: center;">
   <tbody>
@@ -62,6 +53,8 @@ This Magento module is responsible for getting Magento logs and custom instrumen
 Together, they make a practical local workflow for Magento AI debugging: Magento emits structured events to Seq, and the IDE-side MCP integration makes those events easier to explore from within the development environment.
 
 ## Installation
+
+Requirements: PHP satisfying the constraint in [composer.json](composer.json), the cURL extension, an existing Magento 2 installation and a reachable Seq server.
 
 Install the module:
 
@@ -181,3 +174,23 @@ You can still provide the full raw endpoint explicitly if you want:
 ```text
 http://seq:80/api/events/raw?clef
 ```
+
+## FAQ and troubleshooting
+
+### Why do no events appear in Seq?
+
+Forwarding is disabled by default. Enable it in [Admin config](#admin-config), verify the URL from the Magento PHP container, and check the API key. Delivery is best-effort: each event uses a synchronous HTTP request with a 300 ms connection timeout and an 800 ms total timeout, without a persistent retry queue.
+
+### Is the Seq API key sent to the browser?
+
+No. The browser posts to Magento's `/V1/vitaliiboiko-seq/collect` REST route; PHP adds the Seq API key server-side. That collection route allows anonymous requests, which is one reason this module is restricted to local development.
+
+### Does the JavaScript helper work without RequireJS?
+
+The bundled bootstrap is a RequireJS module loaded through Magento's initializer. A storefront without that initialization needs its own integration; installing this module does not establish Hyvä compatibility.
+
+### Do I need the Seq MCP plugin?
+
+No. You can browse events directly in Seq. [Seq MCP](https://github.com/VitaliyBoyko/seq-intellij-mcp) adds IDE-based searching and SQL queries for a connected AI assistant. The [Magento PhpStorm plugin](https://github.com/VitaliyBoyko/magento2-phpstorm-plugin) separately provides Magento code navigation and generators.
+
+See the [changelog](CHANGELOG.md) and [report module issues here](https://github.com/VitaliyBoyko/magento-seq/issues) with the module version and a minimal event example.

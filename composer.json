@@ -1,6 +1,6 @@
 {
   "name": "vitaliyboyko/magento-seq",
-  "description": "Magento 2 local-development Seq instrumentation module",
+  "description": "Magento 2 local-development module forwarding Monolog and custom PHP/JavaScript events to Seq structured logging",
   "type": "magento2-module",
   "version": "2026.1.2",
   "require": {
@@ -22,5 +22,19 @@
     "psr-4": {
       "VitaliiBoiko\\Seq\\": ""
     }
+  },
+  "keywords": [
+    "magento2",
+    "seq",
+    "structured-logging",
+    "monolog",
+    "clef",
+    "instrumentation",
+    "debugging"
+  ],
+  "homepage": "https://github.com/VitaliyBoyko/magento-seq",
+  "support": {
+    "issues": "https://github.com/VitaliyBoyko/magento-seq/issues",
+    "source": "https://github.com/VitaliyBoyko/magento-seq"
   }
 }
