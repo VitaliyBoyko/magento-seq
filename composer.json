@@ -13,7 +13,7 @@
     "magento/module-webapi": "*"
   },
   "license": [
-    "proprietary"
+    "MIT"
   ],
   "autoload": {
     "files": [

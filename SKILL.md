@@ -3,6 +3,12 @@ name: magento-seq
 description: Use this skill when you want to instrument a Magento project with the VitaliiBoiko_Seq module so events, debugging traces, and Magento logs flow into Seq during local development. Use it for choosing instrumentation points, emitting backend events through `VitaliiBoiko\\Seq\\Api\\InstrumentationInterface`, emitting frontend events through `window.devSeq`, structuring event names and payloads, and keeping instrumentation useful, low-noise, and safe for local debugging.
 compatibility: Magento 2 projects using the VitaliiBoiko_Seq module; local development only; frontend helper requires the module to be enabled and configured.
 ---
+<!--
+SPDX-FileCopyrightText: Private Entrepreneur Vitalii Boiko
+SPDX-License-Identifier: MIT
+License: see LICENSE in the repository root.
+-->
+
 
 # Magento Seq Instrumentation
 

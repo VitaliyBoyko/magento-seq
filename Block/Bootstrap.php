@@ -1,4 +1,10 @@
 <?php
+/*
+ * SPDX-FileCopyrightText: Private Entrepreneur Vitalii Boiko
+ * SPDX-License-Identifier: MIT
+ * License: see LICENSE in the repository root.
+ */
+
 declare(strict_types=1);
 
 namespace VitaliiBoiko\Seq\Block;

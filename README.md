@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: Private Entrepreneur Vitalii Boiko
+SPDX-License-Identifier: MIT
+License: see LICENSE in the repository root.
+-->
+
 # Magento 2 Seq logging and instrumentation
 
 `vitaliyboyko/magento-seq` forwards Magento Monolog records and custom PHP/JavaScript events to [Seq](https://datalust.co/seq) as structured CLEF logs. Use it to inspect local request flow and debug modules from one event stream. This module is for local development only.
